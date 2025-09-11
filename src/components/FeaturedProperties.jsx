@@ -1,6 +1,37 @@
-import React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 function FeaturedProperties() {
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    const fetchImage = async () => {
+      try {
+        const url = `https://68b826bcb715405043274639.mockapi.io/api/properties/PropertyListing`;
+        const result = await axios.get(url);
+
+        // Filter only ids 1, 2, 12, 18
+        const filtered = result.data.filter((item) =>
+          ["1", "2", "12", "18"].includes(item.id)
+        );
+
+        setImages(filtered);
+      } catch (error) {
+        console.error("Error fetching images:", error);
+      }
+    };
+
+    fetchImage();
+  }, []);
+
+  // Fallback images
+  const fallbackImages = ["./FP1.png", "./FP2.png", "./FP3.png", "./FP4.png"];
+
+  const handleError = (e, index) => {
+    e.target.src = fallbackImages[index];
+  };
+
   return (
     <div className="px-[20px] md:px-[40px] lg:px-[53px] py-10 my-10">
       {/* Header Section */}
@@ -17,22 +48,24 @@ function FeaturedProperties() {
       </div>
 
       {/* Grid Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-[25px] gap-y-[25px] lg:gap-y-[35px]  w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-[25px] gap-y-[25px] lg:gap-y-[35px] w-full">
         {/* FP1 */}
         <div className="col-span-1 lg:col-span-2 overflow-hidden">
           <img
-            src="./FP1.png"
+            src={images[0]?.image || fallbackImages[0]}
             alt="Featured Property 1"
-            className="w-full h-[250px] md:h-[300px] lg:h-full object-cover rounded-xl"
+            onError={(e) => handleError(e, 0)}
+            className="w-full h-[250px] md:h-[300px] lg:w-[650px] lg:h-[478px] 2xl:w-full object-cover rounded-xl"
           />
         </div>
 
         {/* FP2 */}
         <div className="hidden md:block col-span-1 overflow-hidden lg:col-span-1">
           <img
-            src="./FP2.png"
+            src={images[1]?.image || fallbackImages[1]}
             alt="Featured Property 2"
-            className="w-full h-[250px] md:h-[300px] lg:h-full object-cover rounded-xl"
+            onError={(e) => handleError(e, 1)}
+            className="w-full h-[250px] md:h-[300px] lg:w-[307px] lg:h-[478px] 2xl:w-full object-cover rounded-xl"
           />
         </div>
 
@@ -40,16 +73,18 @@ function FeaturedProperties() {
         <div className="hidden lg:grid lg:grid-rows-2 lg:gap-y-[35px] col-span-1">
           <div className="overflow-hidden">
             <img
-              src="./FP3.png"
+              src={images[2]?.image || fallbackImages[2]}
               alt="Featured Property 3"
-              className="w-full h-full object-cover rounded-xl"
+              onError={(e) => handleError(e, 2)}
+              className="w-full h-full lg:w-[309px] lg:h-[226px] 2xl:w-full object-cover rounded-xl"
             />
           </div>
           <div className="overflow-hidden">
             <img
-              src="./FP4.png"
+              src={images[3]?.image || fallbackImages[3]}
               alt="Featured Property 4"
-              className="w-full h-full object-cover rounded-xl"
+              onError={(e) => handleError(e, 3)}
+              className="w-full lg:w-[309px] lg:h-[226px] 2xl:w-full object-cover rounded-xl"
             />
           </div>
         </div>
