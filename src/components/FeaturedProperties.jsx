@@ -25,13 +25,6 @@ function FeaturedProperties() {
     fetchImage();
   }, []);
 
-  // Fallback images
-  const fallbackImages = ["./FP1.png", "./FP2.png", "./FP3.png", "./FP4.png"];
-
-  const handleError = (e, index) => {
-    e.target.src = fallbackImages[index];
-  };
-
   return (
     <div className="px-[20px] md:px-[40px] lg:px-[53px] py-10 my-10">
       {/* Header Section */}
@@ -52,9 +45,8 @@ function FeaturedProperties() {
         {/* FP1 */}
         <div className="col-span-1 lg:col-span-2 overflow-hidden">
           <img
-            src={images[0]?.image || fallbackImages[0]}
+            src={images[0]?.image}
             alt="Featured Property 1"
-            onError={(e) => handleError(e, 0)}
             className="w-full h-[250px] md:h-[300px] lg:w-[650px] lg:h-[478px] 2xl:w-full object-cover rounded-xl"
           />
         </div>
@@ -62,9 +54,8 @@ function FeaturedProperties() {
         {/* FP2 */}
         <div className="hidden md:block col-span-1 overflow-hidden lg:col-span-1">
           <img
-            src={images[1]?.image || fallbackImages[1]}
+            src={images[1]?.image}
             alt="Featured Property 2"
-            onError={(e) => handleError(e, 1)}
             className="w-full h-[250px] md:h-[300px] lg:w-[307px] lg:h-[478px] 2xl:w-full object-cover rounded-xl"
           />
         </div>
@@ -73,17 +64,15 @@ function FeaturedProperties() {
         <div className="hidden lg:grid lg:grid-rows-2 lg:gap-y-[35px] col-span-1">
           <div className="overflow-hidden">
             <img
-              src={images[2]?.image || fallbackImages[2]}
+              src={images[2]?.image}
               alt="Featured Property 3"
-              onError={(e) => handleError(e, 2)}
               className="w-full h-full lg:w-[309px] lg:h-[226px] 2xl:w-full object-cover rounded-xl"
             />
           </div>
           <div className="overflow-hidden">
             <img
-              src={images[3]?.image || fallbackImages[3]}
+              src={images[3]?.image}
               alt="Featured Property 4"
-              onError={(e) => handleError(e, 3)}
               className="w-full lg:w-[309px] lg:h-[226px] 2xl:w-full object-cover rounded-xl"
             />
           </div>

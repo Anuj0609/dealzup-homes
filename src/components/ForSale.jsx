@@ -1,45 +1,30 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { FaStar } from "react-icons/fa";
 
 function ForSale() {
-  const properties = [
-    {
-      image: "./Sale2.png",
-      location: "New York, NY",
-      rating: "4.5/5",
-      description:
-        "Spacious 3BHK apartment in a prime location with modern amenities.",
-      price: "$450,000",
-      buttonText: "Buy Now",
-    },
-    {
-      image: "./Sale3.png",
-      location: "New York, NY",
-      rating: "4.5/5",
-      description:
-        "Spacious 3BHK apartment in a prime location with modern amenities.",
-      price: "$450,000",
-      buttonText: "Buy Now",
-    },
-    {
-      image: "./Sale4.png",
-      location: "New York, NY",
-      rating: "4.5/5",
-      description:
-        "Spacious 3BHK apartment in a prime location with modern amenities.",
-      price: "$450,000",
-      buttonText: "Buy Now",
-    },
-    {
-      image: "./Sale5.png",
-      location: "New York, NY",
-      rating: "4.5/5",
-      description:
-        "Spacious 3BHK apartment in a prime location with modern amenities.",
-      price: "$450,000",
-      buttonText: "Buy Now",
-    },
-  ];
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    const fetchImage = async () => {
+      try {
+        const url = `https://68b826bcb715405043274639.mockapi.io/api/properties/PropertyListing`;
+        const result = await axios.get(url);
+
+        // Filter only ids 1, 2, 12, 18
+        const filtered = result.data.filter((item) =>
+          ["31", "50", "46", "49"].includes(item.id)
+        );
+
+        setImages(filtered);
+      } catch (error) {
+        console.error("Error fetching images:", error);
+      }
+    };
+
+    fetchImage();
+  }, []);
 
   return (
     <div className="py-12 px-5 sm:px-8 md:px-12 lg:px-[53px] bg-[#F9FAFB]">
@@ -62,9 +47,9 @@ function ForSale() {
 
       {/* Cards Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-[25px] gap-y-[35px] 2xl:gap-x-16">
-        {properties.map((property, index) => (
+        {images.map((property, index) => (
           <div
-            key={index}
+            key={property.id}
             className={`
               bg-[#F1F1F1] rounded-2xl shadow-md overflow-hidden 
               hover:shadow-2xl hover:-translate-y-3 hover:scale-[1.02] 
@@ -79,7 +64,7 @@ function ForSale() {
             <div className="overflow-hidden rounded-t-2xl">
               <img
                 src={property.image}
-                alt={property.description}
+                alt={property.description || "Property Image"}
                 className="w-full h-[200px] 2xl:h-[250px] object-cover p-2 rounded-2xl transition-transform duration-300 ease-in-out hover:scale-105"
               />
             </div>
@@ -91,20 +76,21 @@ function ForSale() {
                 <span className="flex flex-row items-center gap-2">
                   <img src="./Sale1.png" alt="" className="w-5 h-6" />
                   <div className="font-poppins font-normal text-[18px] leading-[100%] text-[#979797]">
-                    {property.location}
+                    {property.location || "Unknown Location"}
                   </div>
                 </span>
                 <span className="flex flex-row items-center gap-2">
                   <FaStar className="text-[#FFD700] w-6 h-6" />
                   <div className="font-poppins font-normal text-[18px] leading-[100%] text-[#979797]">
-                    {property.rating}
+                    {property.rating || "4.5/5"}
                   </div>
                 </span>
               </div>
 
               {/* Description */}
               <p className="font-poppins font-normal text-[16px] leading-[25px] text-[#1E1E1E] mb-4">
-                {property.description}
+                {property.description ||
+                  "Spacious property in a prime location with modern amenities."}
               </p>
 
               <div className="flex flex-row justify-between items-center">
@@ -115,12 +101,12 @@ function ForSale() {
                    hover:bg-[#162d66] hover:shadow-lg hover:scale-105 
                    transition-all duration-300 ease-in-out"
                 >
-                  {property.buttonText}
+                  Buy Now
                 </button>
 
                 {/* Price */}
                 <span className="font-poppins font-normal text-[24px] text-[#222222]">
-                  {property.price}
+                  {property.price || "$450,000"}
                 </span>
               </div>
             </div>

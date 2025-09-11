@@ -1,45 +1,42 @@
-import React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { FaStar } from "react-icons/fa";
 
 function ForRent() {
-  const properties = [
-    {
-      image: "./Rent1.png",
-      location: "New York, NY",
-      rating: "4.5/5",
-      description:
-        "Spacious 3BHK apartment in a prime location with modern amenities.",
-      price: "$1,500/month",
-      buttonText: "Buy Now",
-    },
-    {
-      image: "./Rent2.png",
-      location: "New York, NY",
-      rating: "4.5/5",
-      description:
-        "Spacious 3BHK apartment in a prime location with modern amenities.",
-      price: "$2,599/month",
-      buttonText: "Buy Now",
-    },
-    {
-      image: "./Rent3.png",
-      location: "New York, NY",
-      rating: "4.5/5",
-      description:
-        "Spacious 3BHK apartment in a prime location with modern amenities.",
-      price: "$1,600/month",
-      buttonText: "Buy Now",
-    },
-    {
-      image: "./Rent4.png",
-      location: "New York, NY",
-      rating: "4.5/5",
-      description:
-        "Spacious 3BHK apartment in a prime location with modern amenities.",
-      price: "$1,600/month",
-      buttonText: "Buy Now",
-    },
-  ];
+  const [properties, setProperties] = useState([]);
+
+  useEffect(() => {
+    const fetchImage = async () => {
+      try {
+        const url = `https://68b826bcb715405043274639.mockapi.io/api/properties/PropertyListing`;
+        const result = await axios.get(url);
+
+        // Filter only ids 27, 28, 29, 30
+        const filtered = result.data.filter((item) =>
+          ["27", "28", "29", "30"].includes(item.id)
+        );
+
+        // Map them into card-ready format
+        const mapped = filtered.map((item, index) => ({
+          image: item.image,
+          location: item.location || "New York, NY",
+          rating: "4.5/5",
+          description:
+            item.description ||
+            "Spacious 3BHK apartment in a prime location with modern amenities.",
+          price: item.price || `$${1500 + index * 200}/month`,
+          buttonText: "Buy Now",
+        }));
+
+        setProperties(mapped);
+      } catch (error) {
+        console.error("Error fetching images:", error);
+      }
+    };
+
+    fetchImage();
+  }, []);
 
   return (
     <div className="py-12 px-5 sm:px-8 md:px-12 lg:px-[53px] bg-[#F9FAFB]">
