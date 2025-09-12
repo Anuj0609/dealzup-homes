@@ -1,20 +1,24 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { useRouter } from "next/navigation";
 
-// Reusable Custom Select Component
-function CustomSelect({ options, placeholder, onChange }) {
+// Custom Select Component
+function CustomSelect({ options, placeholder, onChange, value }) {
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState("");
+
   return (
     <div className="relative w-full">
       <div
         onClick={() => setOpen((prev) => !prev)}
         className="flex justify-between items-center w-full px-4 py-2 border border-gray-300 rounded-4xl font-poppins text-[16px] text-[#1E1E1E] cursor-pointer bg-white"
       >
-        <span>{selected || placeholder}</span>
+        <span>
+          {options.find((opt) => opt.value === value)?.label || placeholder}
+        </span>
         <svg
           className="w-4 h-4 text-[#1E1E1E]"
           fill="none"
@@ -35,9 +39,8 @@ function CustomSelect({ options, placeholder, onChange }) {
             <li
               key={i}
               onClick={() => {
-                setSelected(opt.label);
-                setOpen(false);
                 onChange(opt.value);
+                setOpen(false);
               }}
               className="px-4 py-2 cursor-pointer hover:bg-gray-100"
             >
@@ -50,7 +53,7 @@ function CustomSelect({ options, placeholder, onChange }) {
   );
 }
 
-// Simple Card Component
+// Card Component
 function Card({ title, description, image }) {
   return (
     <div className="bg-white shadow-md rounded-2xl overflow-hidden">
@@ -63,14 +66,16 @@ function Card({ title, description, image }) {
   );
 }
 
-export default function DreamHome() {
+// Default export for Next.js page
+export default function ListingsPage() {
+  const router = useRouter();
   const [listings, setListings] = useState([]);
-  const [locations, setLocations] = useState([]); // <-- For dropdown
+  const [locations, setLocations] = useState([]);
   const [type, setType] = useState("");
   const [propertyType, setPropertyType] = useState("");
   const [location, setLocation] = useState("");
   const [displayedListings, setDisplayedListings] = useState([]);
-  const [error, setError] = useState(""); // <-- To show validation message
+  const [error, setError] = useState("");
 
   useEffect(() => {
     async function fetchListings() {
@@ -79,39 +84,39 @@ export default function DreamHome() {
           "https://68b826bcb715405043274639.mockapi.io/api/properties/PropertyListing"
         );
         setListings(response.data);
-
-        // Extract unique city/state combinations for dropdown
         const uniqueLocations = Array.from(
           new Set(response.data.map((item) => `${item.city}, ${item.state}`))
         ).map((loc) => ({ value: loc, label: loc }));
-
         setLocations(uniqueLocations);
-      } catch (error) {
-        console.error("Error fetching listings:", error);
+      } catch (err) {
+        console.error(err);
       }
     }
     fetchListings();
   }, []);
 
-  const handleFindProperty = () => {
-    if (!type || !propertyType || !location) {
-      setError(
-        "Please select Type, Property Type, and Location before proceeding."
-      );
-      return;
+  // Prefill from URL query params (for Next 13+ app directory)
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      setType(params.get("type") || "");
+      setPropertyType(params.get("propertyType") || "");
+      setLocation(params.get("location") || "");
     }
-    setError(""); // clear error if all options are selected
+  }, []);
 
-    // Just show 2 random cards
-    const randomTwo = listings.sort(() => 0.5 - Math.random()).slice(0, 2);
-    setDisplayedListings(randomTwo);
-  };
+  // Pick any random two cards to display (no filter logic)
+  useEffect(() => {
+    if (listings.length > 0) {
+      const randomCards = listings.sort(() => 0.5 - Math.random()).slice(0, 2);
+      setDisplayedListings(randomCards);
+    }
+  }, [listings]);
 
   return (
     <div>
       <Navbar />
 
-      {/* Hero Section */}
       <div
         className="relative h-[500px] bg-cover bg-center md:rounded-3xl xl:mx-[53px] md:my-10 py-10 mx-4 rounded-2xl"
         style={{ backgroundImage: "url('./Hero1.png')" }}
@@ -125,7 +130,6 @@ export default function DreamHome() {
           </div>
         </div>
 
-        {/* Floating Filters */}
         <div
           className="py-4 lg:py-2 mt-44 md:mt-56 lg:mt-[320px]  
                       mx-4 md:mx-8 xl:mx-[114px] 2xl:mx-[300px] 
@@ -140,6 +144,7 @@ export default function DreamHome() {
               { value: "sell", label: "For Sell" },
             ]}
             onChange={setType}
+            value={type}
           />
 
           <CustomSelect
@@ -151,6 +156,7 @@ export default function DreamHome() {
               { value: "plot", label: "Plot" },
             ]}
             onChange={setPropertyType}
+            value={propertyType}
           />
 
           <CustomSelect
@@ -161,26 +167,21 @@ export default function DreamHome() {
                 : [{ value: "", label: "Loading..." }]
             }
             onChange={setLocation}
+            value={location}
           />
 
-          <button
-            onClick={handleFindProperty}
-            className="w-full bg-[#1E3A8A] text-white px-6 py-3 md:py-4 rounded-4xl font-poppins text-[16px] hover:bg-[#162d66] transition"
-          >
+          <button className="w-full bg-[#1E3A8A] text-white px-6 py-3 md:py-4 rounded-4xl font-poppins text-[16px] hover:bg-[#162d66] transition">
             Find Property
           </button>
         </div>
 
-        {/* Error message */}
         {error && (
           <p className="text-red-500 text-center mt-4 font-poppins">{error}</p>
         )}
       </div>
 
-      {/* Spacer */}
       <div className="mt-28"></div>
 
-      {/* Cards Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-10 mx-4 md:mx-8 xl:mx-[114px] 2xl:mx-[300px]">
         {displayedListings.map((listing, i) => (
           <Card
@@ -191,7 +192,6 @@ export default function DreamHome() {
           />
         ))}
       </div>
-
       <Footer />
     </div>
   );

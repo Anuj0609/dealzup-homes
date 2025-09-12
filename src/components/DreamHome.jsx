@@ -1,10 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { BsSearch } from "react-icons/bs";
 import { IoIosArrowDown } from "react-icons/io";
+import axios from "axios";
 
 // Reusable Custom Select Component
-function CustomSelect({ options, placeholder }) {
+function CustomSelect({ options, placeholder, onChange }) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState("");
 
@@ -17,7 +19,6 @@ function CustomSelect({ options, placeholder }) {
         <span>{selected || placeholder}</span>
         <IoIosArrowDown className="text-[#1E1E1E]" />
       </div>
-
       {open && (
         <ul className="absolute z-10 mt-2 w-full bg-white border border-gray-200 rounded-2xl shadow-lg max-h-40 overflow-y-auto">
           {options.map((opt, i) => (
@@ -26,6 +27,7 @@ function CustomSelect({ options, placeholder }) {
               onClick={() => {
                 setSelected(opt.label);
                 setOpen(false);
+                onChange(opt.value);
               }}
               className="px-4 py-2 cursor-pointer hover:bg-gray-100"
             >
@@ -39,18 +41,50 @@ function CustomSelect({ options, placeholder }) {
 }
 
 function DreamHome() {
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [showOptions, setShowOptions] = useState(false);
 
-  const locations = ["California", "Texas", "New York", "Florida", "Illinois"];
-  const filtered = locations.filter((loc) =>
-    loc.toLowerCase().includes(query.toLowerCase())
+  // States for select inputs
+  const [type, setType] = useState("");
+  const [propertyType, setPropertyType] = useState("");
+  const [location, setLocation] = useState("");
+
+  // Location options fetched from API
+  const [locationOptions, setLocationOptions] = useState([]);
+
+  // Fetch locations from API on mount
+  useEffect(() => {
+    async function fetchLocations() {
+      try {
+        const response = await axios.get(
+          "https://68b826bcb715405043274639.mockapi.io/api/properties/PropertyListing"
+        );
+        const uniqueLocs = Array.from(
+          new Set(response.data.map((item) => `${item.city}, ${item.state}`))
+        ).map((loc) => ({ value: loc, label: loc }));
+        setLocationOptions(uniqueLocs);
+      } catch (err) {
+        setLocationOptions([]);
+      }
+    }
+    fetchLocations();
+  }, []);
+
+  const filtered = locationOptions.filter((opt) =>
+    opt.label.toLowerCase().includes(query.toLowerCase())
   );
+
+  const handleFindProperty = () => {
+    router.push(
+      `/listings?type=${type}&propertyType=${propertyType}&location=${location}`
+    );
+  };
 
   return (
     <div
       className="h-[500px] bg-cover bg-center 
-                 md:rounded-3xl xl:mx-[53px] md:my-10 py-10 mx-4 rounded-2xl"
+                md:rounded-3xl xl:mx-[53px] md:my-10 py-10 mx-4 rounded-2xl"
       style={{ backgroundImage: "url('./Hero1.png')" }}
     >
       {/* Title Section */}
@@ -99,17 +133,17 @@ function DreamHome() {
 
           {showOptions && (
             <ul className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-200 rounded-xl mt-2 shadow-lg max-h-40 overflow-y-auto">
-              {(query ? filtered : locations).length > 0 ? (
-                (query ? filtered : locations).map((loc, i) => (
+              {(query ? filtered : locationOptions).length > 0 ? (
+                (query ? filtered : locationOptions).map((loc, i) => (
                   <li
                     key={i}
                     onClick={() => {
-                      setQuery(loc);
+                      setQuery(loc.label);
                       setShowOptions(false);
                     }}
                     className="px-4 py-2 cursor-pointer hover:bg-gray-100"
                   >
-                    {loc}
+                    {loc.label}
                   </li>
                 ))
               ) : (
@@ -140,6 +174,7 @@ function DreamHome() {
             { value: "rent", label: "For Rent" },
             { value: "sell", label: "For Sell" },
           ]}
+          onChange={setType}
         />
 
         <CustomSelect
@@ -150,19 +185,19 @@ function DreamHome() {
             { value: "apartment", label: "Apartment" },
             { value: "plot", label: "Plot" },
           ]}
+          onChange={setPropertyType}
         />
 
         <CustomSelect
           placeholder="Select Location"
-          options={[
-            { value: "delhi", label: "Delhi" },
-            { value: "mumbai", label: "Mumbai" },
-            { value: "bangalore", label: "Bangalore" },
-            { value: "dubai", label: "Dubai" },
-          ]}
+          options={locationOptions}
+          onChange={setLocation}
         />
 
-        <button className="w-full bg-[#1E3A8A] text-white px-6 py-3 md:py-4 rounded-4xl font-poppins text-[16px] hover:bg-[#162d66] transition">
+        <button
+          className="w-full bg-[#1E3A8A] text-white px-6 py-3 md:py-4 rounded-4xl font-poppins text-[16px] hover:bg-[#162d66] transition"
+          onClick={handleFindProperty}
+        >
           Find Property
         </button>
       </div>
