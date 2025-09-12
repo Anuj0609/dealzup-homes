@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 // Custom Select Component
 function CustomSelect({ options, placeholder, onChange, value }) {
@@ -66,9 +66,10 @@ function Card({ title, description, image }) {
   );
 }
 
-// Default export for Next.js page
 export default function ListingsPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [listings, setListings] = useState([]);
   const [locations, setLocations] = useState([]);
   const [type, setType] = useState("");
@@ -95,23 +96,34 @@ export default function ListingsPage() {
     fetchListings();
   }, []);
 
-  // Prefill from URL query params (for Next 13+ app directory)
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      setType(params.get("type") || "");
-      setPropertyType(params.get("propertyType") || "");
-      setLocation(params.get("location") || "");
-    }
-  }, []);
+    setType(searchParams.get("type") || "");
+    setPropertyType(searchParams.get("propertyType") || "");
+    setLocation(searchParams.get("location") || "");
+  }, [searchParams]);
 
-  // Pick any random two cards to display (no filter logic)
   useEffect(() => {
     if (listings.length > 0) {
       const randomCards = listings.sort(() => 0.5 - Math.random()).slice(0, 2);
       setDisplayedListings(randomCards);
     }
   }, [listings]);
+
+  // Helper to pick random cards
+  function getRandomCards(listings) {
+    if (!listings.length) return [];
+    return listings.sort(() => 0.5 - Math.random()).slice(0, 2);
+  }
+
+  const handleFindProperty = () => {
+    const params = new URLSearchParams();
+    if (type) params.set("type", type);
+    if (propertyType) params.set("propertyType", propertyType);
+    if (location) params.set("location", location);
+
+    router.push(`/listings?${params.toString()}`, { scroll: false });
+    setDisplayedListings(getRandomCards(listings));
+  };
 
   return (
     <div>
@@ -170,7 +182,10 @@ export default function ListingsPage() {
             value={location}
           />
 
-          <button className="w-full bg-[#1E3A8A] text-white px-6 py-3 md:py-4 rounded-4xl font-poppins text-[16px] hover:bg-[#162d66] transition">
+          <button
+            onClick={handleFindProperty}
+            className="w-full bg-[#1E3A8A] text-white px-6 py-3 md:py-4 rounded-4xl font-poppins text-[16px] hover:bg-[#162d66] transition"
+          >
             Find Property
           </button>
         </div>
