@@ -16,6 +16,8 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { FaGoogle, FaFacebook, FaApple } from "react-icons/fa";
+import { GrApple } from "react-icons/gr";
+import { SiFacebook } from "react-icons/si";
 
 function Page() {
   const router = useRouter();
@@ -72,7 +74,6 @@ function Page() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      {/* Top Navigation */}
       <div className="w-full px-6 sm:px-8 md:px-12 lg:px-[55px] py-4 flex justify-between items-center gap-4 sm:gap-6 text-[#1E1E1E] font-poppins shadow-xl bg-white">
         <Link
           href="/"
@@ -100,9 +101,7 @@ function Page() {
         </Link>
       </div>
 
-      {/* Content */}
       <div className="flex flex-1 flex-col lg:flex-row min-h-[calc(100vh-80px)]">
-        {/* Form Section */}
         <div className="w-full lg:w-2/5 flex flex-col justify-center px-6 sm:px-10 py-10 gap-8 sm:gap-12">
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <h2
@@ -131,10 +130,10 @@ function Page() {
                 placeholder="Enter Your Email Id"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full pl-10 px-4 py-3 border rounded-xl text-[#1E1E1E] focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]"
+                className="w-full px-4 py-3 border border-[#1E3A8A] rounded-xl text-[#7A7A7A] font-poppins font-normal text-base focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]"
                 required
               />
-              <CiMail className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg cursor-pointer" />
+              <CiMail className="absolute right-3 top-[70%] transform -translate-y-1/2 text-gray-400 text-lg cursor-pointer" />
             </div>
 
             <div className="mb-4 relative">
@@ -150,13 +149,13 @@ function Page() {
                 placeholder="Enter Your Password"
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full px-4 py-3 pr-10 border rounded-xl text-[#1E1E1E] focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]"
+                className="w-full px-4 py-3 border border-[#1E3A8A] rounded-xl text-[#7A7A7A] font-poppins font-normal text-base focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]"
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                className="absolute right-3 top-[70%]  transform -translate-y-1/2 text-gray-400"
               >
                 {showPassword ? (
                   <VscEyeClosed size={20} />
@@ -174,7 +173,6 @@ function Page() {
             </button>
           </form>
 
-          {/* ✅ Social Logins */}
           <div className="mt-6 flex flex-col items-center gap-3 w-full">
             <div className="flex items-center w-full">
               <div className="flex-grow border-t border-gray-300"></div>
@@ -189,19 +187,19 @@ function Page() {
                 onClick={handleAppleLogin}
                 className="p-2 sm:p-3 rounded-full hover:bg-gray-100"
               >
-                <FaApple className="text-lg sm:text-xl" />
+                <GrApple className="text-lg sm:text-xl w-8 h-8" />
               </button>
               <button
                 onClick={handleFacebookLogin}
                 className="p-2 sm:p-3 rounded-full hover:bg-gray-100"
               >
-                <FaFacebook className="text-blue-600 text-lg sm:text-xl" />
+                <SiFacebook className="text-blue-600 text-lg sm:text-xl w-7 h-7" />
               </button>
               <button
                 onClick={handleGoogleLogin}
                 className="p-2 sm:p-3 rounded-full hover:bg-gray-100"
               >
-                <FaGoogle className="text-red-500 text-lg sm:text-xl" />
+                <FaGoogle className="text-red-500 text-lg sm:text-xl w-7 h-7" />
               </button>
             </div>
           </div>
@@ -217,7 +215,6 @@ function Page() {
           </p>
         </div>
 
-        {/* Image Section */}
         <div className="hidden lg:flex w-3/5 items-center justify-center overflow-hidden">
           <img
             src="https://picsum.photos/1200/800"

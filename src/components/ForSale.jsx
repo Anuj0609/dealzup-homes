@@ -28,7 +28,6 @@ function ForSale() {
 
   return (
     <div className="py-12 px-5 sm:px-8 md:px-12 lg:px-[53px] bg-[#F9FAFB]">
-      {/* Section Heading */}
       <div className="flex flex-col lg:flex-row items-center justify-between gap-6 w-full pb-10">
         <div className="flex flex-col text-center lg:text-left">
           <h2 className="font-poppins font-bold text-[26px] sm:text-[30px] md:text-[35px] leading-[120%] text-[#1E3A8A] mb-4">
@@ -45,7 +44,6 @@ function ForSale() {
         </div>
       </div>
 
-      {/* Cards Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-[25px] gap-y-[35px] 2xl:gap-x-16">
         {images.map((property, index) => (
           <div
@@ -60,7 +58,6 @@ function ForSale() {
               xl:block                                 /* 4 on ≥1440 */
             `}
           >
-            {/* Image */}
             <div className="overflow-hidden rounded-t-2xl">
               <img
                 src={property.image}
@@ -69,14 +66,12 @@ function ForSale() {
               />
             </div>
 
-            {/* Card Content */}
             <div className="p-5 flex flex-col justify-between">
-              {/* Location + Rating */}
               <div className="flex justify-between items-center mb-3">
                 <span className="flex flex-row items-center gap-2">
                   <img src="./Sale1.png" alt="" className="w-5 h-6" />
                   <div className="font-poppins font-normal text-[18px] leading-[100%] text-[#979797]">
-                    {property.location || "Unknown Location"}
+                    {property.location || "New York, NY"}
                   </div>
                 </span>
                 <span className="flex flex-row items-center gap-2">
@@ -87,14 +82,12 @@ function ForSale() {
                 </span>
               </div>
 
-              {/* Description */}
               <p className="font-poppins font-normal text-[16px] leading-[25px] text-[#1E1E1E] mb-4">
                 {property.description ||
                   "Spacious property in a prime location with modern amenities."}
               </p>
 
               <div className="flex flex-row justify-between items-center">
-                {/* Button */}
                 <button
                   className="font-poppins font-semibold text-[16px] text-[#FFFFFF] 
                    bg-[#1E3A8A] px-7 py-2 rounded-3xl 
@@ -104,7 +97,6 @@ function ForSale() {
                   Buy Now
                 </button>
 
-                {/* Price */}
                 <span className="font-poppins font-normal text-[24px] text-[#222222]">
                   {property.price || "$450,000"}
                 </span>

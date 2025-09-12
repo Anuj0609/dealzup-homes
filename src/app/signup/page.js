@@ -57,7 +57,6 @@ function Page() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      {/* Top Navigation */}
       <div className="w-full px-6 lg:px-[55px] py-4 flex justify-between items-center gap-4 text-[#1E1E1E] font-poppins shadow-xl bg-white">
         <Link
           href="/"
@@ -85,9 +84,7 @@ function Page() {
         </Link>
       </div>
 
-      {/* Content */}
       <div className="flex flex-1 flex-col lg:flex-row min-h-[calc(100vh-80px)]">
-        {/* Form Section */}
         <div className="w-full lg:w-2/5 flex flex-col justify-center px-6 sm:px-10 py-10 gap-8">
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <h2
@@ -116,7 +113,7 @@ function Page() {
                 placeholder="Enter Your Full Name"
                 value={formData.fullName}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border rounded-xl text-[#1E1E1E] focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]"
+                className="w-full px-4 py-3 border border-[#1E3A8A] rounded-xl text-[#7A7A7A] font-poppins font-normal text-base focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]"
                 required
               />
             </div>
@@ -134,10 +131,10 @@ function Page() {
                 placeholder="Enter Your Email Id"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full pl-10 px-4 py-3 border rounded-xl text-[#1E1E1E] focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]"
+                className="w-full px-4 py-3 border border-[#1E3A8A] rounded-xl text-[#7A7A7A] font-poppins font-normal text-base focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]"
                 required
               />
-              <CiMail className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg cursor-pointer" />
+              <CiMail className="absolute right-3 top-[70%]  transform -translate-y-1/2 text-gray-400 text-lg cursor-pointer" />
             </div>
 
             <div className="mb-4 relative">
@@ -153,13 +150,13 @@ function Page() {
                 placeholder="Enter Your Password"
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full px-4 py-3 pr-10 border rounded-xl text-[#1E1E1E] focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]"
+                className="w-full px-4 py-3 border border-[#1E3A8A] rounded-xl text-[#7A7A7A] font-poppins font-normal text-base focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]"
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                className="absolute right-3 top-[70%] transform -translate-y-1/2 text-gray-400"
               >
                 {showPassword ? (
                   <VscEyeClosed size={20} />
@@ -182,13 +179,13 @@ function Page() {
                 placeholder="Confirm Your Password"
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                className="w-full px-4 py-3 pr-10 border rounded-xl text-[#1E1E1E] focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]"
+                className="w-full px-4 py-3 border border-[#1E3A8A] rounded-xl text-[#7A7A7A] font-poppins font-normal text-base focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]"
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                className="absolute right-3 top-[70%] transform -translate-y-1/2 text-gray-400"
               >
                 {showConfirmPassword ? (
                   <VscEyeClosed size={20} />
@@ -217,7 +214,6 @@ function Page() {
           </p>
         </div>
 
-        {/* Image Section */}
         <div className="hidden lg:flex w-3/5 items-center justify-center overflow-hidden">
           <img
             src="https://picsum.photos/1200/800"

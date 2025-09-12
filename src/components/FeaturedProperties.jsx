@@ -11,7 +11,6 @@ function FeaturedProperties() {
         const url = `https://68b826bcb715405043274639.mockapi.io/api/properties/PropertyListing`;
         const result = await axios.get(url);
 
-        // Filter only ids 1, 2, 12, 18
         const filtered = result.data.filter((item) =>
           ["1", "2", "12", "18"].includes(item.id)
         );
@@ -27,7 +26,6 @@ function FeaturedProperties() {
 
   return (
     <div className="px-[20px] md:px-[40px] lg:px-[53px] py-10 my-10">
-      {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-center gap-6 px-5 pb-10">
         <div className="font-poppins font-bold text-[28px] md:text-[32px] lg:text-[40px] leading-[100%] tracking-[0] text-center text-[#1E3A8A]">
           Featured Property
@@ -40,9 +38,7 @@ function FeaturedProperties() {
         </div>
       </div>
 
-      {/* Grid Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-[25px] gap-y-[25px] lg:gap-y-[35px] w-full">
-        {/* FP1 */}
         <div className="col-span-1 lg:col-span-2 overflow-hidden">
           <img
             src={images[0]?.image}
@@ -51,7 +47,6 @@ function FeaturedProperties() {
           />
         </div>
 
-        {/* FP2 */}
         <div className="hidden md:block col-span-1 overflow-hidden lg:col-span-1">
           <img
             src={images[1]?.image}
@@ -60,7 +55,6 @@ function FeaturedProperties() {
           />
         </div>
 
-        {/* FP3 + FP4 only for large screens */}
         <div className="hidden lg:grid lg:grid-rows-2 lg:gap-y-[35px] col-span-1">
           <div className="overflow-hidden">
             <img

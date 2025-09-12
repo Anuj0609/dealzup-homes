@@ -30,7 +30,6 @@ function WhatWeDo() {
 
   return (
     <div className="px-[53px] 2xl:px-[80px] py-20 text-center mt-56 md:my-2">
-      {/* Section title */}
       <h2 className="font-poppins font-bold text-[35px] leading-[100%] text-[#1E3A8A] mb-4">
         What We Do?
       </h2>
@@ -39,7 +38,6 @@ function WhatWeDo() {
         Helping you find, buy, and rent the perfect property with ease.
       </p>
 
-      {/* Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-8 2xl:gap-16">
         {features.map((item, index) => (
           <div

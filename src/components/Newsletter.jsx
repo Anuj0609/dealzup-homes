@@ -3,7 +3,6 @@ import React from "react";
 function Newsletter() {
   return (
     <div className="px-5 md:px-10 lg:px-[85px] py-10 md:py-30">
-      {/* Heading */}
       <div className="font-poppins font-bold text-[28px] md:text-[34px] lg:text-[40px] leading-[100%] text-[#1E3A8A]">
         Start Your Journey Today!
       </div>
@@ -11,7 +10,6 @@ function Newsletter() {
         Create a profile in seconds and find your ideal home.
       </div>
 
-      {/* Form */}
       <div
         className="
           grid grid-cols-1
@@ -22,18 +20,16 @@ function Newsletter() {
           py-3
         "
       >
-        {/* Name Input */}
         <input
           type="text"
           placeholder="Enter Your Name"
-          className="border border-gray-300 rounded-xl px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]
+          className="border border-gray-300 rounded-xl px-6 py-3 w-full shadow-md focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]
           placeholder:font-poppins placeholder:font-normal placeholder:text-[16px] placeholder:leading-[24px] placeholder:text-[#888888]"
         />
 
-        {/* User Type Dropdown */}
         <select
           defaultValue=""
-          className="border border-gray-300 rounded-xl px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-[#1E3A8A] 
+          className="border border-gray-300 rounded-xl px-6 py-3 w-full shadow-md focus:outline-none focus:ring-2 focus:ring-[#1E3A8A] 
           text-[#888888] font-poppins font-normal text-[16px] leading-[24px]"
         >
           <option value="" disabled>
@@ -44,15 +40,13 @@ function Newsletter() {
           <option value="agent">Agent</option>
         </select>
 
-        {/* Location Input */}
         <input
           type="text"
           placeholder="Enter Your Location"
-          className="border border-gray-300 rounded-xl px-6 py-3 w-full focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]
+          className="border border-gray-300 rounded-xl px-6 py-3 w-full shadow-md focus:outline-none focus:ring-2 focus:ring-[#1E3A8A]
           placeholder:font-poppins placeholder:font-normal placeholder:text-[16px] placeholder:leading-[24px] placeholder:text-[#888888]"
         />
 
-        {/* Button */}
         <button className="bg-[#1E3A8A] text-white font-poppins font-semibold text-[16px] md:text-[18px] rounded-3xl px-8 py-3 w-full md:w-auto hover:bg-[#16377a] transition">
           Continue
         </button>

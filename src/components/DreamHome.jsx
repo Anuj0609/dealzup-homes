@@ -5,7 +5,6 @@ import { BsSearch } from "react-icons/bs";
 import { IoIosArrowDown } from "react-icons/io";
 import axios from "axios";
 
-// Reusable Custom Select Component
 function CustomSelect({ options, placeholder, onChange }) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState("");
@@ -45,15 +44,12 @@ function DreamHome() {
   const [query, setQuery] = useState("");
   const [showOptions, setShowOptions] = useState(false);
 
-  // States for select inputs
   const [type, setType] = useState("");
   const [propertyType, setPropertyType] = useState("");
   const [location, setLocation] = useState("");
 
-  // Location options fetched from API
   const [locationOptions, setLocationOptions] = useState([]);
 
-  // Fetch locations from API on mount
   useEffect(() => {
     async function fetchLocations() {
       try {
@@ -84,10 +80,9 @@ function DreamHome() {
   return (
     <div
       className="h-[500px] bg-cover bg-center 
-                md:rounded-3xl xl:mx-[53px] md:my-10 py-10 mx-4 rounded-2xl"
+                md:rounded-3xl xl:mx-[53px]  py-10 mx-4 rounded-2xl"
       style={{ backgroundImage: "url('./Hero1.png')" }}
     >
-      {/* Title Section */}
       <div className="space-y-4 py-3">
         <div className="font-poppins font-bold text-3xl md:text-[48px] leading-[100%] text-center text-white">
           Find Your Dream Home in One Click!
@@ -97,7 +92,6 @@ function DreamHome() {
         </div>
       </div>
 
-      {/* Search Box */}
       <div className="flex flex-col lg:flex-row justify-between items-center xl:px-[114px] 2xl:px-[300px] xl:pt-[224px] 2xl:pt-[150px] lg:pt-48 lg:px-8 pt-10">
         <div
           className="border border-amber-600 px-[20px] py-[10px] bg-white rounded-2xl 
@@ -160,7 +154,6 @@ function DreamHome() {
         </div>
       </div>
 
-      {/* Filters Section */}
       <div
         className="py-4 lg:py-2 mt-44 md:mt-20 xl:mt-8 2xl:mt-24 
                       mx-4 md:mx-8 xl:mx-[114px] 2xl:mx-[300px] 

@@ -35,15 +35,12 @@ function Features() {
   return (
     <div className="px-6 md:px-12 xl:px-[53px] ">
       <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-10 lg:gap-0">
-        {/* Left side - Images */}
         <div className="relative ">
-          {/* First image (always visible) */}
           <img
             src="./Feature1.png"
             alt="Property 1"
             className="object-cover rounded-2xl shadow-md"
           />
-          {/* Second image (hidden on small screens, visible on lg and above) */}
           <img
             src="./Feature2.png"
             alt="Property 2"
@@ -51,7 +48,6 @@ function Features() {
           />
         </div>
 
-        {/* Right side - Heading + Features */}
         <div className="lg:space-y-10">
           <h2
             className="font-poppins font-bold text-2xl md:text-3xl xl:text-[45px] leading-[100%] tracking-[0.02em] text-left
