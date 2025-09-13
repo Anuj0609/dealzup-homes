@@ -56,7 +56,7 @@ function CustomSelect({ options, placeholder, onChange, value }) {
 
 function Card({ title, description, image }) {
   return (
-    <div className="bg-white shadow-md rounded-2xl relative w-full max-w-[648px] mx-auto">
+    <div className="bg-white shadow-md rounded-2xl relative w-full max-w-[648px] mx-auto my-5 lg:my-20">
       <div className="overflow-hidden rounded-2xl relative w-full h-[300px] sm:h-[400px] md:h-[510px]">
         <Image src={image} alt={title} fill style={{ objectFit: "cover" }} />
       </div>
