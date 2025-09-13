@@ -1,3 +1,4 @@
+"use client";
 import DreamHome from "@/components/DreamHome";
 import FeaturedProperties from "@/components/FeaturedProperties";
 import Features from "@/components/Features";

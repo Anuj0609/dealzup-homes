@@ -1,15 +1,16 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import axios from "axios";
+import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import ListingsClient from "@/components/ListingsClient";
 import { MapPin, Bookmark } from "lucide-react";
 
 function CustomSelect({ options, placeholder, onChange, value }) {
   const [open, setOpen] = useState(false);
-
   return (
     <div className="relative w-full">
       <div
@@ -56,35 +57,23 @@ function CustomSelect({ options, placeholder, onChange, value }) {
 function Card({ title, description, image }) {
   return (
     <div className="bg-white shadow-md rounded-2xl relative w-full max-w-[648px] mx-auto">
-      <div className="overflow-hidden rounded-2xl">
-        <img
-          src={image}
-          alt={title}
-          className="w-full h-[300px] sm:h-[400px] md:h-[510px] object-cover"
-        />
+      <div className="overflow-hidden rounded-2xl relative w-full h-[300px] sm:h-[400px] md:h-[510px]">
+        <Image src={image} alt={title} fill style={{ objectFit: "cover" }} />
       </div>
-
       <div className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-1/2 bg-white shadow-lg rounded-xl px-4 sm:px-6 py-4 w-[90%]">
         <div className="flex justify-between items-start">
           <div className="flex items-center gap-2">
             <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" />
             <h3 className="text-base sm:text-lg font-bold text-[#1E1E1E]">
-              Green Villa, Uttar Pradesh
+              {title}
             </h3>
           </div>
           <button>
             <Bookmark className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500 hover:text-[#1E1E1E]" />
           </button>
         </div>
-
-        <p className="text-xs sm:text-sm text-gray-600 mt-2">
-          Spacious 3BHK apartment in a prime location with modern amenities.
-        </p>
-
-        {/* Divider */}
+        <p className="text-xs sm:text-sm text-gray-600 mt-2">{description}</p>
         <hr className="my-3 sm:my-4 border-gray-200" />
-
-        {/* Price & Button */}
         <div className="flex justify-between items-center">
           <span className="font-poppins font-semibold text-lg sm:text-[24px] leading-[100%] text-[#1E1E1E] text-center">
             $450,000
@@ -100,7 +89,6 @@ function Card({ title, description, image }) {
 
 export default function ListingsPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const [listings, setListings] = useState([]);
   const [locations, setLocations] = useState([]);
@@ -108,7 +96,6 @@ export default function ListingsPage() {
   const [propertyType, setPropertyType] = useState("");
   const [location, setLocation] = useState("");
   const [displayedListings, setDisplayedListings] = useState([]);
-  const [error, setError] = useState("");
 
   useEffect(() => {
     async function fetchListings() {
@@ -129,36 +116,32 @@ export default function ListingsPage() {
   }, []);
 
   useEffect(() => {
-    setType(searchParams.get("type") || "");
-    setPropertyType(searchParams.get("propertyType") || "");
-    setLocation(searchParams.get("location") || "");
-  }, [searchParams]);
-
-  useEffect(() => {
     if (listings.length > 0) {
       const randomCards = listings.sort(() => 0.5 - Math.random()).slice(0, 2);
       setDisplayedListings(randomCards);
     }
   }, [listings]);
 
-  function getRandomCards(listings) {
-    if (!listings.length) return [];
-    return listings.sort(() => 0.5 - Math.random()).slice(0, 2);
-  }
-
   const handleFindProperty = () => {
     const params = new URLSearchParams();
     if (type) params.set("type", type);
     if (propertyType) params.set("propertyType", propertyType);
     if (location) params.set("location", location);
-
     router.push(`/listings?${params.toString()}`, { scroll: false });
-    setDisplayedListings(getRandomCards(listings));
+    const randomCards = listings.sort(() => 0.5 - Math.random()).slice(0, 2);
+    setDisplayedListings(randomCards);
   };
 
   return (
     <div>
       <Navbar />
+      <Suspense fallback={null}>
+        <ListingsClient
+          setType={setType}
+          setPropertyType={setPropertyType}
+          setLocation={setLocation}
+        />
+      </Suspense>
 
       <div
         className="relative h-[500px] bg-cover bg-center md:rounded-3xl xl:mx-[53px] md:my-10 py-10 mx-4 rounded-2xl"
@@ -174,9 +157,9 @@ export default function ListingsPage() {
         </div>
 
         <div
-          className="py-4 lg:py-2 mt-44 md:mt-56 lg:mt-[30px]  
-                      mx-4 md:mx-[105px] 2xl:mx-[300px] 
-                      px-3 md:px-5 bg-white shadow-lg rounded-4xl 
+          className="py-4 lg:py-2 mt-44 md:mt-56 lg:mt-[30px]
+                      mx-4 md:mx-[105px] 2xl:mx-[300px]
+                      px-3 md:px-5 bg-white shadow-lg rounded-4xl
                       grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-center"
         >
           <CustomSelect
@@ -189,7 +172,6 @@ export default function ListingsPage() {
             onChange={setType}
             value={type}
           />
-
           <CustomSelect
             placeholder="Property Type"
             options={[
@@ -201,7 +183,6 @@ export default function ListingsPage() {
             onChange={setPropertyType}
             value={propertyType}
           />
-
           <CustomSelect
             placeholder="Select Location"
             options={
@@ -212,7 +193,6 @@ export default function ListingsPage() {
             onChange={setLocation}
             value={location}
           />
-
           <button
             onClick={handleFindProperty}
             className="w-full bg-[#1E3A8A] text-white px-6 py-3 md:py-4 rounded-4xl font-poppins text-[16px] hover:bg-[#162d66] transition"
@@ -220,21 +200,15 @@ export default function ListingsPage() {
             Find Property
           </button>
         </div>
-
-        {error && (
-          <p className="text-red-500 text-center mt-4 font-poppins">{error}</p>
-        )}
       </div>
 
-      <div className="mt-28"></div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-25 md:gap-10 my-[180px] md:my-10 mx-4 md:mx-8 ">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-25 md:gap-10 my-[180px] md:my-10 mx-4 md:mx-8">
         {displayedListings.map((listing, i) => (
           <Card
             key={i}
             title={listing.name}
             description={`${listing.city}, ${listing.state}`}
-            image={listing.image}
+            image={listing.image || "https://picsum.photos/734/393"}
           />
         ))}
       </div>
